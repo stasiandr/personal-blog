@@ -13,27 +13,35 @@ searchHidden: false
 
 ---
 
-## Introduction
-
-Why do you want hugo
+In today's blog post, we'll walk through the process of setting up a static website using the Hugo framework, deploying it to Firebase Hosting, and automating the deployment process with GitHub Actions. While this may not be the most exhilarating topic, it can be usefull for bloggers and developers looking to manage their websites efficiently.
 
 ## Hugo
 
-First of all let's create our blog website with Hugo. To install hugo you can go to [Hugo installation](https://gohugo.io/installation/) section. 
-On MacOS and Linux you can run this (of course, if you are earlier installed brew):
+### Installing Hugo
+
+To start, we'll need to [install Hugo]((https://gohugo.io/installation/)). 
+If you're using MacOS or Linux and have Homebrew installed, you can run the following command:
 
 ```bash
 brew install hugo
 ```
 
-Then we can create out webstite. To create the directory structure for your project in the `./personal-blog` directory.
+Once Hugo is installed, you can create a new Hugo project and navigate to the project directory using these commands:
 
 ```bash
 hugo new site personal-blog
 cd personal-blog
 ```
 
-Next you need theme. For this you may want to go to [Hugo themes](https://themes.gohugo.io). As for this tutorial (and this blog) we will be using [PaperMod](https://github.com/adityatelange/hugo-PaperMod). Themes are installed throug git. Don't forget to add hugo `.gitignore` to your repo, it can be found [here](https://github.com/github/gitignore/blob/main/community/Golang/Hugo.gitignore). To install it you run:
+### Adding a Theme
+
+Themes are an essential part of any website, and Hugo provides a wide range of options. For this tutorial, we'll use the 
+[PaperMod](https://github.com/adityatelange/hugo-PaperMod) theme, which you can find on the [Hugo themes]((https://themes.gohugo.io)). 
+To add the theme to your project, run these commands:
+
+Next you need theme. For this you may want to go to [Hugo themes](https://themes.gohugo.io). As for this tutorial (and this blog) we will be using [PaperMod](https://github.com/adityatelange/hugo-PaperMod). 
+
+> Don't forget to add hugo `.gitignore` to your repo, it can be found [here](https://github.com/github/gitignore/blob/main/community/Golang/Hugo.gitignore)
 
 ```bash
 git init
@@ -44,39 +52,44 @@ git submodule update --init --recursive
 echo "theme = 'PaperMod'" >> hugo.toml
 ``` 
 
-And at last you want to serve you blog to write post as like I'm literraly doing rigth now
+### Test Your Hugo Site
+
+With your theme in place, you can now serve your Hugo site locally to start writing and designing your blog posts:
+
 
 ```bash
 hugo serve
 ```
 
-It's empty but it's working. I dont want to go much into details of how hugo works, so I highly incorage you to go to [Hugo website](https://gohugo.io) and [PaperMod](https://github.com/adityatelange/hugo-PaperMod). 
+While the website may seem barebones right now, it's operational. For in-depth information on how Hugo functions and to explore the PaperMod theme further, I encourage you to visit [Hugo's official website](https://gohugo.io)  and the [PaperMod GitHub repository](https://github.com/adityatelange/hugo-PaperMod). .
 
-One last non-obvious thing: you can replace `hugo.toml` with `config.yaml`.
+> One last non-obvious thing: you can replace `hugo.toml` with `config.yaml`.
 
 ## Firebase
 
-Before next steps you want to create new GitHub repo.
+### Settings up Firebase
 
-So first of all you want to create you project at [Firebase Console](https://console.firebase.google.com/). Next you want to install **Firebase CLI** by running following:
+> Before we proceed, create a new [GitHub](https://github.com) repository for your project. 
+
+Now, let's set up Firebase. If you haven't already, install the Firebase CLI globally:
 
 ```bash 
 npm install -g firebase-tools
 ```
 
-Next you login into your firebase accout.
+After installation, log in to your Firebase account:
 
 ```bash
 firebase login
 ```
 
-And initializes project. In firebase features we want to select `❯◉ Hosting: Configure files for Firebase Hosting and (optionally) set up GitHub Action deploys`.
+Next, initialize your Firebase project. Choose the "Hosting" option when asked about Firebase features:
 
 ```bash
 firebase init
 ```
 
-Next there will be a lot of questions about yout repo. We can answer every question with default option, because we want to set up our github actions later.
+You can stick with the default options for most of the questions, as we'll configure GitHub Actions for deployment later.
 
 ```text
 ? What do you want to use as your public directory? public
@@ -84,18 +97,22 @@ Next there will be a lot of questions about yout repo. We can answer every quest
 ? Set up automatic builds and deploys with GitHub? No
 ```
 
-For now if you want to deploy your website manually, run following: 
+### Manual Deployment to Firebase (Optional)
+
+If you'd like to deploy your website manually, you can do so with the following commands:
 
 ```bash 
 hugo
 firebase deploy
 ```
 
-Do not forget to change your baseUrl, because otherwise all your links will be broken!
+> Don't forget to update the baseUrl in your Hugo configuration to ensure your links work correctly.
 
 ## GitHub Actions
 
-Create `.github/workflows` folder insinde Hugo project. We will build and deploy using npm. There you place `deploy.yaml` file:
+### Github Actions Workflow
+
+Now, let's automate the deployment process with GitHub Actions. In your Hugo project, create a `.github/workflows` folder and add a `deploy.yaml` file with the following content:
 
 ```yaml
 name: Deploy Hugo to Firebase
@@ -113,7 +130,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
       with:
-        submodules: recursive
+        submodules: recursive # This clones our theme 
 
     - name: Setup Node.js
       uses: actions/setup-node@v2
@@ -135,15 +152,17 @@ jobs:
       FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 ```
 
-Next in your GitHub repository, go to "Settings" > "Secrets" > "Actions". You want to click on "new repository secret". Use "FIREBASE_TOKEN" as key.
+### GitHub Secrets
 
-To obtain this token run folowing:
+To securely store your Firebase token, go to your GitHub repository, navigate to "Settings" > "Secrets" > "Actions," and add a new repository secret named FIREBASE_TOKEN. You can obtain this token by running following:
 
 ```bash
 firebase login:ci
 ```
 
-And now, you want to push our repo to GitHub:
+### Push to GitHub
+
+Finally, push your repository to GitHub:
 
 ```bash
 git remote add origin <your repository>
@@ -151,6 +170,6 @@ git branch -M main
 git push -u origin main
 ```
 
-## Last things
-
+Now, you can monitor the "Actions" tab in your GitHub repository to see the automated build and deployment process in action. 
+Your website will be up and running on Firebase Hosting, ready for you to publish your content.
 

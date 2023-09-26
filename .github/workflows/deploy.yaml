@@ -1,0 +1,35 @@
+name: Deploy Hugo to Firebase
+
+on:
+  push:
+    branches:
+      - main  # Change this to the branch you want to trigger deployment from
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 18  # You can change the Node.js version if needed
+
+    - name: Install Hugo
+      run: npm install -g hugo-cli
+
+    - name: Build Hugo site
+      run: hugo --minify
+
+    - name: Deploy to Firebase
+      run: |
+        npm install -g firebase-tools
+        firebase deploy --token "$FIREBASE_TOKEN" --only hosting
+
+    env:
+      FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

@@ -3,14 +3,12 @@ title: "How to host personal blog for developers"
 description: "Hugo → GitHub Actions → Firebase"
 date: 2020-09-15T11:30:03+00:00
 tags: ["Tutorial", "Hugo", "Git", "GitHub Actions" , "Firebase"]
-author: "Me"
 draft: false
-hidemeta: false
-comments: false
-disableHLJS: false
-hideSummary: false
-searchHidden: false
 
+editPost:
+    URL: "https://github.com/stasiandr/personal-blog/tree/main/content"
+    Text: "Suggest Changes" 
+    appendFilePath: true
 ---
 
 In today's blog post, we'll walk through the process of setting up a static website using the Hugo framework, deploying it to Firebase Hosting, and automating the deployment process with GitHub Actions. While this may not be the most exhilarating topic, it can be usefull for bloggers and developers looking to manage their websites efficiently.

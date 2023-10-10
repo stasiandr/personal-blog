@@ -19,7 +19,6 @@ params:
   title: ShtenDev's Blog
   description: "ShtenDev's presonal blog where you can find tutorials, debriefs and other usefull stuff"
   keywords: [Blog, Portfolio, ShtenDev, Tutorial, Unity, Unity3D]
-  author: Me
 #  images: ["<link or path of image for opengraph, twitter-cards>"]
   DateFormat: "January 2, 2006"
   defaultTheme: auto
@@ -28,9 +27,9 @@ params:
   ShowReadingTime: true
   ShowShareButtons: false
   ShowPostNavLinks: true
-  ShowBreadCrumbs: false
+  ShowBreadCrumbs: true
   ShowCodeCopyButtons: true
-  ShowWordCount: true
+  ShowWordCount: false
   ShowRssButtonInSectionTermList: true
   UseHugoToc: true
   disableSpecial1stPost: false
